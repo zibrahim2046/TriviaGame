@@ -12,7 +12,7 @@ var trivia = {
   incorrect: 0,
   unanswered: 0,
   currentSet: 0,
-  timer: 20,
+  timer: 40,
   timerOn: false,
   timerId: "",
 
@@ -36,7 +36,7 @@ var trivia = {
     q9:
       'In S2E3 "Office Olympics": What does Pam name "Box of paper snowshoe racing"?',
     q10:
-      'In S2E4 "The Fire": What are Meredit\'s five DVD choices for the game "Desert Island"?'
+      'In S2E4 "The Fire": What are Meredith\'s five DVD choices for the game "Desert Island"?'
   },
 
   // options (4 total options) questions 1-10
@@ -159,15 +159,75 @@ var trivia = {
         "<h3>Out of time! The answer was " +
           Object.values(trivia.answers)[trivia.currentSet] +
           "</h3>"
-      )}
-      // if all the questions have been shown, end the game and show reults
-      else if(trivia.currentSet === Object.keys(trivia.questions).length) {
-
-      // adds results of game (correct, incorrect, unanswered) to the page 
-      $("#results")
-      .html("<h3>Thank you for playing!</h3>"+ "<p>Correct:"+trivia.correct+"</p>"+ "<p>Incorrect:"+trivia.incorrect+"</p"+'<p>Unaswered: '+ trivia.unanswered +'</p>'+
-      '<p>Please play again!</p>');
-
+      );
     }
+    // if all the questions have been shown, end the game and show reults
+    else if (trivia.currentSet === Object.keys(trivia.questions).length) {
+      // adds results of game (correct, incorrect, unanswered) to the page
+      $("#results").html(
+        "<h3>Thank you for playing!</h3>" +
+          "<p>Correct:" +
+          trivia.correct +
+          "</p>" +
+          "<p>Incorrect:" +
+          trivia.incorrect +
+          "</p" +
+          "<p>Unanswered:" +
+          trivia.unanswered +
+          "</p>" +
+          "<p>Please play again!</p>"
+      );
+       // hide game sction
+       $('#game').hide();
+      
+       // show start button to begin a new game
+       $('#start').show();
+     }
+     
+   },
+   // method to evaluate the option clicked
+   guessChecker : function() {
+     
+     // timer ID for gameResult setTimeout
+     var resultId;
+     
+     // the answer to the current question being asked
+     var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
+     
+     // if the text of the option picked matches the answer of the current question, increment correct
+     if($(this).text() === currentAnswer){
+       // turn button green for correct
+       $(this).addClass('btn-success').removeClass('btn-info');
+       
+       trivia.correct++;
+       clearInterval(trivia.timerId);
+       resultId = setTimeout(trivia.guessResult, 1000);
+       $('#results').html('<h3>Correct Answer!</h3>');
+     }
+     // else the user picked the wrong option, increment incorrect
+     else{
+       // turn button clicked red for incorrect
+       $(this).addClass('btn-danger').removeClass('btn-info');
+       
+       trivia.incorrect++;
+       clearInterval(trivia.timerId);
+       resultId = setTimeout(trivia.guessResult, 1000);
+       $('#results').html('<h3>Better luck next time! '+ currentAnswer +'</h3>');
+     }
+     
+   },
+   // method to remove previous question results and options
+   guessResult : function(){
+     
+     // increment to next question set
+     trivia.currentSet++;
+     
+     // remove the options and results
+     $('.option').remove();
+     $('#results h3').remove();
+     
+     // begin next question
+     trivia.nextQuestion();
+    
   }
 };
