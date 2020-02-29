@@ -82,5 +82,32 @@ var trivia = {
     q9: "Flonkerton",
     q10:
       "Legends of the Fall, Legally Blonde, Bridges of Madison County, My Big Fat Greek Wedding, Ghost (but just that one scene)"
+  },
+
+  //method to initialize game
+
+  startGame: function() {
+    //restarting game functions
+    trivia.currentSet = 0;
+    trivia.correct = 0;
+    trivia.incorrect = 0;
+    trivia.unanswered = 0;
+    clearInterval(trivia.timerId);
+
+    //show game selection
+    $("#game").show();
+
+    //empty last results
+    $('results').html('');
+
+    //show timer
+  $("#timer").text(trivia.timer);
+
+  //remove start button
+  $("#start").hide();
+  $("remaining-time").show();
+
   }
+
+  
 };
