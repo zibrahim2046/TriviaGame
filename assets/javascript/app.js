@@ -163,7 +163,11 @@ var trivia = {
       // if all the questions have been shown, end the game and show reults
       else if(trivia.currentSet === Object.keys(trivia.questions).length) {
 
-      //testing this line
+      // adds results of game (correct, incorrect, unanswered) to the page 
+      $("#results")
+      .html("<h3>Thank you for playing!</h3>"+ "<p>Correct:"+trivia.correct+"</p>"+ "<p>Incorrect:"+trivia.incorrect+"</p"+'<p>Unaswered: '+ trivia.unanswered +'</p>'+
+      '<p>Please play again!</p>');
+
     }
   }
 };
